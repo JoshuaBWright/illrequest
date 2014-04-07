@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}ILL Server | Admin{% endblock %}
+
+{% block registered_user_content %}
+	{% if is_admin_user %}
+		<div class="toolbox"></div>
+		<h3>The Admin Page</h3>
+			<p>Howdy!  As the <span class="red_emphasis">Administrator</span>, you have some special tools for maintaining the ILL Server…</p>
+		<div class="nofloat_section_break"></div>
+		<hr />
+		<h4>Add or remove article editors and authors:</h4>
+		<p>Menu entries for article editor / author pairs can be added and removed here.  Removing a reference here does NOT remove an editor's account on the ILL Request System - the request drop down menu for authors and editors is an organizational convenience.  It's probably a good idea to clean up old references from time to time for the sake of clarity.</p>
+		<div id="editor_validation_errors"></div>
+	
+		<div class="form_display_field">
+			<form action="/remove_editor" method="post">
+				<div class="entry_label" id="removeEditor">remove article editor»</div><div class="ill_input_field fill_half">
+					<select class="ill" name="removeEditor" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);">					
+		   			{% for editor in article_editors %}
+						<option value="{{editor.key()}}">{{editor.name|escape}}/{{editor.author|escape}}: {{editor.title|escape}}</option>
+					{% endfor %}
+					</select> 
+				</div> <div class="ill_input_field"><input class="ill" type="submit" value="remove editor" /></div>
+			</form>
+			<hr />
+			<form id="add_editor_form" action="/add_editor" method="post">
+				<div class="entry_label" id="editorName">article editor name»</div><div class="ill_input_field">
+					<textarea class="ill" name="editorName" rows="1" cols="27" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);"></textarea>
+				</div>
+				<div class="entry_label" id="editorTitle">for article title»</div><div class="ill_input_field">
+					<textarea class="ill" name="editorTitle" rows="1" cols="30" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);"></textarea>
+				</div>
+				<div class="entry_label" id="editorVolume">in volume»</div><div class="ill_input_field">
+					<textarea class="ill" name="editorVolume" rows="1" cols="3" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);"></textarea>
+				</div>
+				<div class="nofloat_section_break"></div>
+				<div class="entry_label" id="editorAuthor">for author»</div><div class="ill_input_field">
+					<textarea class="ill" name="editorAuthor" rows="1" cols="27" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);"></textarea>
+				</div>
+				<div class="entry_label" id="editorEmail">editor gmail address»</div><div class="ill_input_field">
+					<textarea class="ill" name="editorEmail" rows="1" cols="27" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);"></textarea>
+				</div>
+				<div class="nofloat_section_break"></div>
+				<div class="entry_label" id="execEditor">exec ed.»</div><div class="ill_input_field">
+					<textarea class="ill" name="execEditor" rows="1" cols="27" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);"></textarea>
+				</div>
+				<div class="entry_label" id="execEmail">exec ed. gmail»</div><div class="ill_input_field">
+					<textarea class="ill" name="execEmail" rows="1" cols="27" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);"></textarea>
+				</div>
+				<div class="ill_input_field"><input class="ill" type="submit" value="add article editor" /></div>
+			</form>
+		</div>
+		<h4>Add or remove libraries:</h4>
+		<p>Menu entries for libraries can be added and removed here.  The administrator can set an ill request's library field by editing an ill request after it has been submitted.</p>
+		<div id="library_validation_errors"></div>
+		<div class="form_display_field">
+			<form action="/remove_library" method="post">
+				<div class="entry_label" id="removeLibrary">remove library»</div><div class="ill_input_field fill_half">
+					<select class="ill" name="removeLibrary" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);">					
+		   			{% for library in libraries %}
+						<option value="{{library.key()}}">{{library.name|escape}}</option>
+					{% endfor %}
+					</select> 
+				</div> <div class="ill_input_field"><input class="ill" type="submit" value="remove editor" /></div>
+			</form>
+			<hr />
+			<form id="add_library_form" action="/add_library" method="post">
+				<div class="entry_label" id="libraryName">library name»</div><div class="ill_input_field">
+					<textarea class="ill" name="libraryName" rows="1" cols="27" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);"></textarea>
+				</div>
+				<div class="ill_input_field"><input class="ill" type="submit" value="add library" /></div>
+			</form>
+		</div>
+		<h4>Notify Editor for Source Return:</h4>
+		<p>You can notify an editor that the time has come for them to return their received sources here (a list is provided).  An email is also sent to the admin gmail account documenting the notification.</p>
+		<div class="form_display_field">
+			<form action="/notify_editor_return" method="post">
+				<div class="entry_label" id="notifyEditor">notify editor»</div><div class="ill_input_field fill_half">
+					<select class="ill" name="notifyEditor" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);">					
+		   			{% for editor in article_editors %}
+						<option value="{{editor.key()}}">{{editor.name|escape}}/{{editor.execEditor|escape}}/{{editor.author|escape}}: {{editor.title|escape}}</option>
+					{% endfor %}
+					</select> 
+				</div> <div class="ill_input_field"><input class="ill" type="submit" value="notify editor" /></div>
+			</form>
+		</div>
+
+	{% else %}
+		<h1>This is the admin page.  Or it would be, if you were the administrator.  Which you aren't.</h1>
+	{% endif %}
+{% endblock %}
+
+{% block validators %}
+	<script type="text/javascript">
+    	var validator = new FormValidator('add_editor_form', [{
+    		name: 'editorName',
+    		display: 'editor name',    
+    		rules: 'required'
+		}, {
+    		name: 'editorTitle',
+    		display: 'article title',    
+    		rules: 'required'
+		}, {
+    		name: 'editorVolume',
+    		display: 'volume',    
+    		rules: 'required'
+		}, {
+    		name: 'editorAuthor',
+    		display: 'author name',    
+    		rules: 'required'
+		}, {
+    		name: 'editorEmail',
+    		display: 'editor email',    
+    		rules: 'required|valid_email'
+		}, {
+    		name: 'execEditor',
+    		display: 'exec ed. name',    
+    		rules: 'required'
+		}, {
+    		name: 'execEmail',
+    		display: 'exec ed. email',    
+    		rules: 'required|valid_email'
+		}], function(errors, event) {
+    		if (errors.length > 0) {
+        		var errorString = '<span class="red_emphasis">&iexcl;Atención por favor! » There are some problems with your entry…</span><ul>';
+        
+		        for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
+		            errorString += '<li class="alertlist">' + errors[i].message + '</li>';
+		        }
+        		errorString += '</ul>';
+        		
+        		error_field = document.getElementById('editor_validation_errors');
+        		error_field.innerHTML = errorString;
+    		}
+		});
+	</script>
+	<script type="text/javascript">
+    	var validator = new FormValidator('add_library_form', [{
+    		name: 'libraryName',
+    		display: 'library name',    
+    		rules: 'required'
+		}], function(errors, event) {
+    		if (errors.length > 0) {
+        		var errorString = '<span class="red_emphasis">&iexcl;Atención por favor! » There are some problems with your entry…</span><ul>';
+        
+		        for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
+		            errorString += '<li class="alertlist">' + errors[i].message + '</li>';
+		        }
+        		errorString += '</ul>';
+        		
+        		error_field = document.getElementById('library_validation_errors');
+        		error_field.innerHTML = errorString;
+    		}
+		});
+	</script>
+{% endblock %}

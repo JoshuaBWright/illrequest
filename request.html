@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}ILL Server | Request{% endblock %}
+
+{% block registered_user_content %}
+	<div>
+		<div class="auto_center" style="width:670px;">
+			<h3><span class="red_emphasis">Attention!</span> | Achtung! | Avvertimento! | Alarma! | 警告! | けいせい! | ghuHmoH!</h3>
+		</div>
+		<p><span class="red_emphasis">Before</span> submitting an ILL request, please make sure that you've finished your preliminary sleuthing:</p>
+		<ul>
+			<li class="checklist">Have you searched Penn's entire library system – <a target="_blank" href="http://www.library.upenn.edu">Van Pelt, Franklin</a>, and <a target="_blank" href="https://www.law.upenn.edu/library/">Biddle?</a> What about <a target="_blank" href="http://www.library.drexel.edu">Drexel's holdings</a> (e.g., the Hagerty Library)?</li>
+			<li class="checklist">Have you asked a librarian for guidance about your source?	 Penn's libraries have some databases whose holdings are not accessible through a simple catalogue search.	Don't forget about alternative media formats, such as microfilm.</li>
+			<li class="checklist">If your source is a statute, executive order, case or other official document, have you visited relevant state or federal government archives online? (e.g. archives.gov).	 For that matter, have you simply spent some quality time with <span class="standard_type"><span style="color:blue">G</span><span style="color:red">o</span><span style="color:gold">o</span><span style="color:blue">g</span><span style="color:green">l</span><span style="color:red">e</span></span> playing around with keywords?</li>
+		</ul>
+		<hr />
+		<div class="left_accent"><div class="source_hunt"></div><em>Sudhir basks in the thrill of the hunt…</em></div>
+		<p>
+			<br />
+			Note that article authors often play fast and loose with spelling, dates, journal abbreviations and other details–one can't assume any of the citation information provided is strictly accurate.  </p>	
+		<p><span class="red_emphasis">Source hunts can be tedious.</span>  It's easy to lapse into a habit of sending out an ILL request for any source that doesn't turn up quickly.  However, please remember that the Journal must manage dozens of ILL requests (some of which require real detective work) even when our editors are diligent.</p>
+		<p><span class="blue_emphasis">In short: A request shouldn't come in for a source that could've been obtained after consultation with a librarian or 15 minutes with Google.</span></p>
+	</div>
+	<div class="nofloat_section_break"></div>
+	<hr />
+	<h3>Submit an ILL Request:</h3>
+	<p>Fill out the applicable fields below – the title, full citation, description and date fields are required (use the best info you have for the date).  The description field should contain, at minimum, <span class="red_emphasis">the specific reason</span> why you can't get access to this volume, i.e., confirm that it is indeed unavailable through Drexel, Van Pelt, etc, and WHY it is unavailable (checked out, missing, etc.). <span class="red_emphasis">Make sure to pick the right article editor/author for your source.</span>  If you have some potentially useful information that doesn't fit any of the main fields, add it to your description of the source as well.	The more info, the better!</p>
+	
+	{% include "request_error_area.html" %}
+
+	{% include "request_form.html" %}
+	
+{% endblock %}
+
+{% block validators %}
+	<script type="text/javascript">
+		attach_user_request_validators('request_validation_errors','request_error_message_area');
+	</script>
+{% endblock %}

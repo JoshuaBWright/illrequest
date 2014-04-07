@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}ILL Server | Home{% endblock %}
+
+{% block registered_user_content %}
+	<div class="left_accent"><div class="robbie"></div></div>
+	<h1>Welcome back, {% if is_admin_user %}Admin {% endif %}<span class="red_emphasis">{{ nickname }}</span>!</h1>
+	<p>As of {{ today }}, galactic standard calendar, here's the lay of your "ILLandscape"…</p>		
+	<ul>
+		{% if is_admin_user %}
+			<li>Sensors indicate that <strong><span name="unsent_count" class="unsent_status">{{ unsent_count }}</span></strong> total request(s) are <span class="unsent_status">unsent</span>, and have yet to be forwarded. <a href="#sent_ills">[»]</a></li>
+			<li>It looks like there are <strong><span name="pending_count" class="pending_status">{{ pending_count }}</span></strong> forwarded request(s) <span class="pending_status">pending</span> fulfillment (don't forget to check if they've come in!). <a href="#pending_ills">[»]</a></li>
+			<li>There should be <strong><span name="received_count" class="received_status">{{ received_count }}</span></strong> request(s) <span class="received_status">received</span> and available at the office (knock on wood). <span class="blue_emphasis">(not shown below - use search)</span></li>
+		{% else %}
+			<li>Sensors indicate that <strong><span name="unsent_count" class="unsent_status">{{ unsent_count }}</span></strong> of your request(s) are <span class="unsent_status">unsent</span>, and yet to be forwarded by the RIT Editor. <a href="#sent_ills">[»]</a></li>
+			<li>It looks like you have <strong><span name="pending_count" class="pending_status">{{ pending_count }}</span></strong> forwarded request(s) <span class="pending_status">pending</span> fulfillment, too. <a href="#pending_ills">[»]</a></li>
+			<li>You should also have <strong><span name="received_count" class="received_status">{{ received_count }}</span></strong> request(s) that we <span class="received_status">received</span> and have available at the office (knock on wood). <a href="#received_ills">[»]</a></li>
+		{% endif %}
+	</ul>
+	<div class="nofloat_section_break"></div>
+	<hr />
+	
+	{% include "request_error_area.html" %}
+	
+	{% if unsent %}
+		<a name="unsent_ills"></a>
+		<p>
+			{% if is_admin_user %}
+				» <em>These are the <span name="unsent_count">{{ unsent_count }}</span> <span class="unsent_status"> unsent request(s)</span> that await your attention:</em>
+			{% else %}
+				» <em>These are your <span name="unsent_count">{{ unsent_count }}</span> <span class="unsent_status"> unsent request(s)</span> in the pipeline:</em>
+			{% endif %}
+		</p>		
+		{% with %}
+			{% set count_element_name="unsent_count" %}
+			{% set dismiss_edit_to="/" %}
+			{% for illrequest in unsent %}
+  				{% include "request_view.html" %}
+			{% endfor %}
+		{% endwith %}
+		<hr />
+	{% endif %}
+	{% if pending %}
+		<a name="pending_ills"></a>
+		<p>
+			{% if is_admin_user %}
+				» <em>These are the <span name="pending_count">{{ pending_count }}</span> forwarded, <span class="pending_status"> pending request(s)</span> that should be ready for pick up soon:</em>
+			{% else %}
+				» <em>These are your <span name="pending_count">{{ pending_count }}</span> forwarded, <span class="pending_status"> pending request(s)</span> that should be in soon:</em>
+			{% endif %}
+		</p>
+		{% with %}
+			{% set count_element_name="pending_count" %}
+			{% set dismiss_edit_to="/" %}
+			{% for illrequest in pending %}
+	  			{% include "request_view.html" %}		
+	  		{% endfor %}
+	  	{% endwith %}
+		<hr />
+	{% endif %}
+	{% if received and not is_admin_user %}
+		<a name="received_ills"></a>
+		<p>
+			» <em>These are your <span name="received_count">{{ received_count }}</span> <span class="received_status">received request(s)</span>, which should be available in the office:</em>
+		</p>
+		{% with %}
+			{% set count_element_name="received_count" %}
+			{% set dismiss_edit_to="/" %}
+			{% for illrequest in received %}
+	  				{% include "request_view.html" %}		
+	  		{% endfor %}
+  		{% endwith %}
+		<hr />
+	{% endif %}
+{% endblock %}
+{% block unregistered_user_content %}
+	<div class="not_logged_in_welcome_area">
+		<p>
+			<h3>Welcome to the <span class="red_emphasis">ILL Request System!</span></h3>
+		</p>	
+		<p>
+			ILL Request Online allows journal members to place new interlibrary loan requests and check the status of current requests using a simple web interface.
+			<ul>
+				<li class="checklist">Need a text from off campus?</li>	 
+				<li class="checklist">Unsure whether a text is already in the office?</li>
+				<li class="checklist">Want to check the status of all of your ILLs?</li>
+				<li class="checklist">Want to know which ILLs are due to expire?</li>
+			</ul>
+			<span class="blue_emphasis">For all such needs, you've come to the right place!</span>  
+			<hr />
+			<p>
+				To use the ILL Request System, all you need is a gmail account.
+			</p>
+		</p>
+	</div>
+	<div class="not_logged_in_welcome_area">
+		<div class="crazy_shelf"></div>
+		<em>In the beginning, there was only the shelf, and lamentation…</em>
+	</div>
+	<div class="nofloat_section_break"></div>
+{% endblock %}
+
+{% block validators%}
+{% endblock %}

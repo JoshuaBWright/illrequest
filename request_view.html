@@ -1,0 +1,56 @@
+<div id="edit-form-{{illrequest.key()}}" class="hovering_edit_box"></div>
+<div class="form_display_field" id="{{illrequest.key()}}">
+	<div class="form_title">
+		<!-- <span class="shadow"> -->
+			{% if illrequest.title %}
+				<span class="{{ illrequest.status }}_status" style="vertical-align:text-bottom; display:inline-block; overflow:auto; max-width:60%;"><span class="capitalize">{{ illrequest.status }}:</span> {{ illrequest.title|escape }} …</span>
+			{% else %}
+				<span class="{{ illrequest.status }}_status"><span class="capitalize">{{ illrequest.status }}:</span> Untitled Source …</span>
+			{% endif %} {% if is_admin_user %} <span class="{{ illrequest.status }}_status">from {{ illrequest.requester|escape }}</span>{% endif %}
+		<!-- </span> -->
+		{% if is_admin_user %} <input type="button" value="edit entry" onclick="submit('/edit_request ','POST','requestKey={{illrequest.key()}}&dismissEditTo={{dismiss_edit_to|escape}}', display_request_edit_form );"></input>{% endif %}
+	</div>
+	{% if is_admin_user %} <div class="right_accent"><div class="warning"><input type="button" value="delete" onclick="if (confirm('Are you sure that you want to delete this request?')) { removeElement('{{illrequest.key()}}'); {% if count_element_name %}decrement('{{count_element_name}}');{% endif %} submit('/remove_request','POST','requestKey={{illrequest.key()}}',post_handler); }"></input><textarea class="hidden">{{illrequest.key()}}</textarea></div></div> {% endif %}
+	<div class="nofloat_section_break"></div>
+	<div class="result_data_line">
+		{% if illrequest.title %}<div class="result_label">type</div><div class="result_text quarter_max">{{ illrequest.resourceType|escape }}</div>{% endif %}
+		{% if illrequest.author %}<div class="result_label">author</div><div class="result_text third_max">{{ illrequest.author|escape }}</div>{% endif %}
+		{% if illrequest.workEditor %}<div class="result_label">book's editor</div><div class="result_text third_max">{{ illrequest.workEditor|escape }}</div>{% endif %}
+		{% if illrequest.publicationDate %}<div class="result_label">pub. dd/mm/yyyy</div><div class="result_text quarter_max">{{ illrequest.publicationDate.day }}/{{ illrequest.publicationDate.month }}/{{ illrequest.publicationDate.year }}</div>{% endif %}
+	</div>
+	<hr />
+	<div class="result_data_line">
+		{% if illrequest.volumeNumber %}<div class="result_label">vol. no.</div><div class="result_text quarter_max">{{ illrequest.volumeNumber|escape }}</div>{% endif %}
+		{% if illrequest.seriesName %}<div class="result_label">series name</div><div class="result_text quarter_max">{{ illrequest.seriesName|escape }}</div>{% endif %}
+		{% if illrequest.pinCite %}<div class="result_label">pin cite</div><div class="result_text quarter_max">{{ illrequest.pinCite|escape }}</div>{% endif %}
+		{% if illrequest.fullCitation %}<div class="result_label">full cite</div><div class="result_text quarter_max">{{ illrequest.fullCitation|escape }}</div>{% endif %}
+	</div>
+	<hr />
+	<div class="result_data_line">
+		{% if illrequest.description %}<div class="result_label">description</div><div class="result_text fill_max">{{ illrequest.description|escape }}</div>{% endif %}
+	</div>
+	<hr />
+	<div class="result_data_line">
+		{% if illrequest.articleEditor %}<div class="result_label">article editor</div><div class="result_text third_max">{{ illrequest.articleEditor|escape }}</div>{% endif %}
+		{% if illrequest.articleEditor %}<div class="result_label">editor's gmail</div><div class="result_text third_max">{{ illrequest.articleEditorEmail|escape }}</div>{% endif %}
+		{% if illrequest.articleAuthor %}<div class="result_label">article author</div><div class="result_text third_max">{{ illrequest.articleAuthor|escape }}</div>{% endif %}
+		{% if illrequest.journalVolume %}<div class="result_label">journal volume</div><div class="result_text quarter_max">{{ illrequest.journalVolume|escape }}</div>{% endif %}
+	</div>
+	<div class="result_data_line">
+	{% if illrequest.articleTitle %}<div class="result_label">for article</div><div class="result_text fill_most">{{ illrequest.articleTitle|escape }}</div>{% endif %}
+	</div>
+	<hr />
+	<div class="result_data_line">
+		{% if illrequest.modifiedOn %}
+			<div class="result_label">update history</div><div class="result_text fill_most">
+			{% for modificationDate in illrequest.modifiedOn %}
+				• {{ modificationDate }} by {{illrequest.modifiedBy[loop.index0]}} ({{illrequest.modifiedWhy[loop.index0]}})
+			{% endfor %}
+			</div>
+		{% endif %}
+		{% if illrequest.canRenew %}<div class="result_label">can renew</div><div class="result_text quarter_max">{{ illrequest.canRenew|escape }}</div>{% endif %}
+	</div>
+	<hr />
+	{% if illrequest.dueDate %}<div class="result_label">due dd/mm/yyyy</div><div class="result_text quarter_max">{{ illrequest.dueDate.day }}/{{ illrequest.dueDate.month }}/{{ illrequest.dueDate.year }}</div>{% endif %}
+	{% if illrequest.library %}<div class="result_label">library</div><div class="result_text third_max">{{ illrequest.library }}</div>{% endif %}
+</div>

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}ILL Server | Quote{% endblock %}
+
+{% block registered_user_content %}
+	<div class="left_accent">
+		<div class="vinny"></div>
+		<em>…for, as the great Judge Judy noted…</em>
+	</div>
+	<h3>Submit a New Quote:</h3>
+	<p>
+		Have a funny, thought provoking or otherwise memorable quote about the law you'd like to share?  Fill out the form below and submit it!
+		<p>
+			Your submission will immediately be parsed and added to our Paxos Algorithm Optimized High Replication Datastore for maximum entertainment throughput per user page impression squared.    
+		</p> 
+		<p>
+			<span class="red_emphasis">Caveat Submittor: Keep it clean.</span>
+		</p>
+	</p>
+	<div class="nofloat_section_break"></div>
+	<hr />
+	<div id="validation_errors"></div>
+	<div class="form_display_field">
+	    <form id="quote_form" action="/submit_quote" method="post">
+	    	<div>
+	    		<div class="form_title">Quote Information</div>
+	    		<div class="entry_label" id="quote">quote »</div><div class="ill_input_field"><textarea class="ill" name="quote" rows="2" cols="70" onfocus="highlight(element(this.name),ill_dark_gold);" 
+	      			onblur="highlight(element(this.name),ill_label_blue);"></textarea></div>
+	      		<div class="entry_label" id="author">author »</div><div class="ill_input_field"><textarea class="ill" name="author" rows="1" cols="25" onfocus="highlight(element(this.name),ill_dark_gold);" 
+	      			onblur="highlight(element(this.name),ill_label_blue);"></textarea></div>	      		
+	      		<!--Renewable (choose "No" if unsure): <input type="radio" name="canRenew" value="Yes">Yes
+	      		<input type="radio" name="canRenew" value="No" checked="checked">No-->
+	      		<hr />
+	      		<div class="auto_center" style="width:107px;">
+	      			<input class="ill" type="submit" value="Submit Quote" />
+	      		</div>
+	      	</div>
+	    </form>
+    </div>
+{% endblock %}
+
+{% block validators %}
+	<script type="text/javascript">
+    	var validator = new FormValidator('quote_form', [{
+    		name: 'quote',
+    		display: 'quote',    
+    		rules: 'required|max_length[215]'
+		}, {
+    		name: 'author',
+    		display: 'author',    
+    		rules: 'required'
+		}], function(errors, event) {
+    		if (errors.length > 0) {
+        		var errorString = '<span class="red_emphasis">&iexcl;Atención por favor! » There are some problems with your quote…</span><ul>';
+        
+		        for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
+		            errorString += '<li class="alertlist">' + errors[i].message + '</li>';
+		        }
+        		errorString += '</ul>';
+        		
+        		error_field = document.getElementById('validation_errors');
+        		error_field.innerHTML = errorString;
+    		}
+		});
+	</script>
+{% endblock %}

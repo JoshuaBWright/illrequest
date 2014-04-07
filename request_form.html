@@ -1,0 +1,107 @@
+<div name="ill_request_form_container" class="form_display_field">
+	<div name="subcontainer_id" style="display:none" class="hidden">{% if ill_request_prefill %}edit-form-{{ill_request_prefill.key()}}{% endif %}</div>
+	{% if ill_request_prefill %}
+	<div class="auto_center" style="width:107px;">
+		<!-- <form action="{{dismiss_edit_to}}"><input class="ill" type="submit" value="Cancel Edit" /></form> -->
+		<input class="ill" type="button" value="cancel edit" onclick="prnt = parent_with_name_for_element('ill_request_form_container',this);prnt.parentNode.style.display='none';prnt.parentNode.innerHTML='';" />
+	</div>
+	<hr />
+	{% endif %}
+	<div class="form_title">General Source Information</div>
+	<form name="ill_request_form" action="{{form_handler_path}}" method="post">
+		<div class="nofloat_section_break"></div>
+ 		<textarea class="hidden" name="requestEditKey">{% if ill_request_prefill %}{{ill_request_prefill.key()}}{% endif %}</textarea>
+ 		<div class="entry_label" id="title">title »</div><div class="ill_input_field"><textarea class="ill" name="title" rows="1" cols="29" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.title|escape }}{% endif %}</textarea></div>
+   		<div class="entry_label" id="author">author »</div><div class="ill_input_field"><textarea class="ill" name="author" rows="1" cols="20" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.author|escape }}{% endif %}</textarea></div>		
+   		<div class="entry_label" id="workEditor">book's editor »</div><div class="ill_input_field"><textarea class="ill" name="workEditor" rows="1" cols="20" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.workEditor|escape }}{% endif %}</textarea></div>
+   		<hr />
+   		<div class="entry_label" id="pubDate">Pub. DD/MM/YYYY »</div><div class="ill_input_field"><textarea class="ill" name="pubDay" rows="1" cols="2" onfocus="highlight(element('pubDate'),ill_dark_gold);" 
+   			onblur="highlight(element('pubDate'),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.publicationDate.day }}{% endif %}</textarea></div>
+   		<div class="ill_input_field"><textarea class="ill" name="pubMonth" rows="1" cols="2" onfocus="highlight(element('pubDate'),ill_dark_gold);" 
+   			onblur="highlight(element('pubDate'),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.publicationDate.month }}{% endif %}</textarea></div>
+   		<div class="ill_input_field"><textarea class="ill" name="pubYear" rows="1" cols="4" onfocus="highlight(element('pubDate'),ill_dark_gold);" 
+   			onblur="highlight(element('pubDate'),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.publicationDate.year }}{% endif %}</textarea></div>
+   		<div class="entry_label" id="volumeNumber">Vol. No. »</div><div class="ill_input_field"><textarea class="ill" name="volumeNumber" rows="1" cols="5" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.volumeNumber|escape }}{% endif %}</textarea></div>
+   		<div class="entry_label" id="seriesName">Periodical/Series Name »</div><div class="ill_input_field"><textarea class="ill" name="seriesName" rows="1" cols="15" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.seriesName|escape }}{% endif %}</textarea></div>
+   		<div class="entry_label" id="pinCite">Pin Cite »</div><div class="ill_input_field"><textarea class="ill" name="pinCite" rows="1" cols="15" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.pinCite }}{% endif %}</textarea></div>
+   		<hr />
+   		<div class="entry_label" id="resourceType">Type »</div><div class="ill_input_field">
+   		<select class="ill" name="resourceType" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Other" %}selected="" {% endif %}value="Other">Other</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Book" %}selected="" {% endif %}value="Book">Book</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Case" %}selected="" {% endif %}value="Case">Case</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Statute" %}selected="" {% endif %}value="Statute">Statute</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Journal Article" %}selected="" {% endif %}value="Journal Article">Journal Article</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Newspaper (Print)" %}selected="" {% endif %}value="Newspaper (Print)">Newspaper (Print)</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Newspaper (Other)" %}selected="" {% endif %}value="Newspaper (Web)">Newspaper (Web)</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Periodical (Other)" %}selected="" {% endif %}value="Periodical (Other)">Periodical (Other)</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Web Page" %}selected="" {% endif %}value="Web Page">Web Page</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Microfilm" %}selected="" {% endif %}value="Microfilm">Microfilm</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Audio" %}selected="" {% endif %}value="Audio">Audio</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.resourceType == "Video" %}selected="" {% endif %}value="Video">Video</option>
+   		</select></div>
+   		<div class="entry_label" id="fullCitation">Full Citation as Provided »</div><div class="ill_input_field"><textarea class="ill" name="fullCitation" rows="1" cols="60" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.fullCitation|escape }}{% endif %}</textarea></div>
+   		<hr />
+   		<div class="entry_label" id="description">Description »</div><div class="ill_input_field"><textarea class="ill" name="description" rows="3" cols="88" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.description|escape }}{% endif %}</textarea></div>
+   			<p style="font-family:'Helvetica Neue', Arial, Helvetica;width:750px;margin-left:92px"><span class="blue_emphasis">N.B.</span> <span class="red_emphasis">The description field MUST INCLUDE THE EXACT REASON you cannot access this volume.</span>  <span class="red_emphasis">"Not at Biddle" is NOT a sufficient reason.</span>  List the libraries you have checked, AND, whether the work is checked out, missing, etc., from each of these libraries.  <span class="red_emphasis">AGAIN, NOTE EVERY LIBRARY YOU HAVE CHECKED AND THE WORK'S SPECIFIC STATUS.</span>  You <span class="red_emphasis">MUST</span> check Biddle, Van Pelt and Hagerty before making a request.</p>
+   		<hr />
+   		<div class="form_title">Journal Information</div>
+   		<div class="nofloat_section_break"></div>
+   		<div class="entry_label" id="articleEditor">article editor/author/volume»</div><div class="ill_input_field third_max">
+			<select class="ill" name="articleEditor" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">					
+   			{% for editor in article_editors %}
+				<option {% if ill_request_prefill and (ill_request_prefill.articleTitle == editor.title and ill_request_prefill.articleEditor == editor.name) %}selected="" {% endif %}value="{{editor.key()}}">{{editor.name|escape}}/{{editor.author|escape}}/v.{{editor.volume}}: {{editor.title|escape}}</option>
+			{% endfor %}
+			</select> 
+		</div>
+		<div class="entry_label" id="requesterFullName">your full name »</div><div class="ill_input_field"><textarea class="ill" name="requesterFullName" rows="1" cols="20" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.requesterFullName|escape }}{% endif %}</textarea></div>
+		{% if ill_request_prefill and is_admin_user %}
+		<div class="entry_label" id="status">status »</div><div class="ill_input_field">
+   		<select class="ill" name="status" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">
+   			<option {% if ill_request_prefill and ill_request_prefill.status == "unsent" %}selected="" {% endif %}value="unsent">unsent</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.status == "pending" %}selected="" {% endif %}value="pending">pending</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.status == "received" %}selected="" {% endif %}value="received">received</option>
+   		</select></div>
+   		<div class="entry_label" id="canRenew">can renew »</div><div class="ill_input_field">
+   		<select class="ill" name="canRenew" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">
+   			<option {% if ill_request_prefill and ill_request_prefill.canRenew == "true" %}selected="" {% endif %}value="true">true</option>
+   			<option {% if ill_request_prefill and ill_request_prefill.canRenew == "false" %}selected="" {% endif %}value="false">false</option>
+   		</select></div>
+   		<hr />
+   		<div class="entry_label" id="dueDate">due date DD/MM/YYYY »</div><div class="ill_input_field"><textarea class="ill" name="dueDay" rows="1" cols="2" onfocus="highlight(element('dueDate'),ill_dark_gold);" 
+   			onblur="highlight(element('dueDate'),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.dueDate.day }}{% endif %}</textarea></div>
+   		<div class="ill_input_field"><textarea class="ill" name="dueMonth" rows="1" cols="2" onfocus="highlight(element('dueDate'),ill_dark_gold);" 
+   			onblur="highlight(element('dueDate'),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.dueDate.month }}{% endif %}</textarea></div>
+   		<div class="ill_input_field"><textarea class="ill" name="dueYear" rows="1" cols="4" onfocus="highlight(element('dueDate'),ill_dark_gold);" 
+   			onblur="highlight(element('dueDate'),ill_label_blue);">{% if ill_request_prefill %}{{ ill_request_prefill.dueDate.year }}{% endif %}</textarea></div>
+   		<div class="entry_label" id="modifiedWhy">reason for edit »</div><div class="ill_input_field"><textarea class="ill" name="modifiedWhy" rows="1" cols="30" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">unspec.</textarea></div>
+   		<div class="entry_label" id="library">library»</div><div class="ill_input_field third_max">
+			<select class="ill" name="library" onfocus="highlight(element(this.name),ill_dark_gold);" 
+   			onblur="highlight(element(this.name),ill_label_blue);">					
+   			{% for library in libraries %}
+				<option {% if ill_request_prefill and (ill_request_prefill.library == library.name) %}selected="" {% endif %}value="{{library.name|escape}}">{{library.name|escape}}</option>
+			{% endfor %}
+			</select> 
+		</div>
+		<p><em><small><span class="red_emphasis">N.B.</span> When setting an unsent ill's status to pending, just set the due date to the roughly anticipated date of arrival.  When the ill comes in, the due date should be set to the actual required return date for the source.  For sources that needn't be returned at all, just set a date past the end of the semester.</small></em></p>
+   		{% endif %}
+   		<hr />
+   		<div class="auto_center" style="width:107px;">
+   			<input class="ill" type="submit" value="{{submit_message}}" />
+   		</div>
+	 </form>
+</div>

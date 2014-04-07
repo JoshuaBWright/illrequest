@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}ILL Server | Search{% endblock %}
+
+{% block registered_user_content %}
+	<div class="left_accent"><div class="the_shadow_knows"></div><em>…three copies of The Federalist, in paperback!?	Never again…</em></div>
+	<br />
+	<h3>Search the Database:</h3>
+	<p>
+		What sources lurk in the heart of the Journal Office, or languish unforwarded by a dilatory RIT Editor?	<span class="red_emphasis">The ILL Request System knows…</span>
+	</p>
+	<p>
+		Here you can search the System's ILL request records across many attributes.	 <span class="red_emphasis">N.B.</span> the search feature can find words within sentences, but currently can't match parts of words for performance reasons.  Thus, a search for <span class="blue_emphasis">awesome</span> would turn up a source entitled <span class="blue_emphasis">The Most Awesome Source Ever</span> but currently not <span class="blue_emphasis">The Most Awesomerest Source Ever.</span> 
+	</p>
+	<div class="nofloat_section_break"></div>	
+	<hr />
+	
+	<div id="validation_errors"></div>
+	{% include "request_error_area.html" %}
+	
+	<div class="form_display_field">
+		 <form name="query_form" action="/submit_search" method="post">
+ 			<div class="form_title">Your Search</div>
+ 			<div id="query_parameters">
+ 				<div>
+		 			<div class="entry_label" id="search_string">Search for »</div><div class="ill_input_field"><textarea class="ill" name="search_string" rows="1" cols="69" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);"></textarea></div>
+		   			<div class="entry_label" id="search_type">Where »</div><div class="ill_input_field"><select class="ill" name="search_type" onfocus="highlight(element(this.name),ill_dark_gold);" 
+		   			onblur="highlight(element(this.name),ill_label_blue);">
+		   			<option value="title:">Title</option>
+		   			<option value="author:">Author</option>
+		   			<option value="description:">Description</option>
+		   			<option value="articleAuthor:">Article Author</option>
+		   			<option value="articleEditor:">Article Editor</option>
+		   			<option value="status:">Status</option>
+		   			<option value="">Everywhere</option>
+		   			</select></div><!-- <input type="button" value="+" style="margin-left:10px;margin-top:3px;font-size:100%;font-weight:bolder;width:30px;"onclick="add_query_parameter_field('query_parameters')" /> -->
+		   		</div>
+	   		</div>
+	   		<hr />
+	   		<div class="auto_center" style="width:107px;">
+	   			<input class="ill" type="submit" value="Submit Search">
+	   		</div>
+		 </form>
+	</div>
+	<hr />
+	{% if search_results %}
+		<h3>Search Results:</h3>
+		<p>
+			» <em>There were <span name="search_count" class="red_emphasis">{{ hit_count }}</span> match(es) to your search…</em>
+		</p>
+		{% with %}
+			{% set count_element_name="search_count" %}
+			{% set dismiss_edit_to="/search" %}
+			{% for illrequest in search_results %}
+				{% include "request_view.html" %}
+			{% endfor %}	
+		{% endwith %}
+	{% endif %}
+	{% if not search_results and tried_to_search %}
+		<h3>No matches were found:</h3>
+		<p>
+			» <em>No records matched that particular search - try searching "everything" to expand your scope.  Also, while capitalization doesn't matter, be sure to re-check your spelling.</em>
+		</p>
+	{% endif %}
+{% endblock %}
+
+{% block validators %}
+	<script type="text/javascript">
+    	var validator = new FormValidator('query_form', [{
+    		name: 'search_string',
+    		display: 'search string',    
+    		rules: 'required'
+		}], function(errors, event) {
+    		if (errors.length > 0) {
+        		var errorString = '<span class="red_emphasis">&iexcl;Atención por favor! » There are some problems with your search…</span><ul>';
+        
+		        for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
+		            errorString += '<li class="alertlist">' + errors[i].message + '</li>';
+		        }
+        		errorString += '</ul>';
+        		
+        		error_field = document.getElementById('validation_errors');
+        		error_field.innerHTML = errorString;
+    		}
+		});
+	</script>
+{% endblock %}

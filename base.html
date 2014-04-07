@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>	
+		<script src="/js/validate.min.js" type="text/javascript"></script>
+		<script src="/js/XHConn.js" type="text/javascript"></script>
+		<script src="/js/main.js" type="text/javascript"></script>
+  		<link type="text/css" rel="stylesheet" href="/css/main.css" />
+  		<title>{% block title %}{% endblock %}</title>
+	</head>
+	<body>
+  		<div class="ornamental_header">
+  			<div class="penn_badge"><p class="badge_title">UPenn | The School of Law</p></div>
+  			<div class="ill_request_badge"><p class="badge_title"><strong><big>ILL Request System</big></strong> (v1.0)</p></div>
+  			<div class="journal_badge"><p class="badge_title">Journal of Constitutional Law</p></div>
+  		</div>
+  		<div class="quote">
+  			{{ funny_quote.quote }} ~ {{ funny_quote.author }}
+  		</div>
+  		<div class="button_bar">
+	  		{% if registered_user_email %}
+	  			<div class="button_set_container">
+	  				<div class={%if is_admin_user %}"button_set_admin"{% else %}"button_set_user"{% endif %}>
+			  			<div class="main_button" onmouseover="highlight(this,'#243271');" onmouseout="highlight(this,'transparent');">
+							<a class="main_button_link" href="{{ loginout_url }}">{{ loginout_linktext }}</a>
+						</div>
+				  		<div class="main_button" onmouseover="highlight(this,'#243271');" onmouseout="highlight(this,'transparent');">
+							<a class="main_button_link" href="/search">search</a>
+						</div>
+						<div class="main_button" onmouseover="highlight(this,'#243271');" onmouseout="highlight(this,'transparent');" >
+							<a class="main_button_link" href="/request">request</a>
+						</div>
+						<div class="main_button" onmouseover="highlight(this,'#243271');" onmouseout="highlight(this,'transparent');">
+							<a class="main_button_link" href="/quote">add quote</a>
+						</div>
+						<div class="main_button" onmouseover="highlight(this,'#243271');" onmouseout="highlight(this,'transparent');">
+							<a class="main_button_link" href="/">home</a>
+						</div>
+						{%if is_admin_user %}
+							<div class="main_button" onmouseover="highlight(this,'#243271');" onmouseout="highlight(this,'transparent');">
+								<a class="main_button_link" href="/admin">admin</a>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			{% else %}
+				<div class="button_set_container">
+					<div class="main_button login_button" onmouseover="highlight(this,'#243271');" onmouseout="highlight(this,'transparent');">
+						<a class="main_button_link" href="{{ loginout_url }}">{{ loginout_linktext }}</a>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+		<div class="content">
+			{% if registered_user_email %}
+				{% block registered_user_content %}{% endblock %}
+			{% else %}
+				{% block unregistered_user_content %}
+					<h1>Please log in!</h1>
+				{% endblock %}
+			{% endif %}
+    	</div>
+    	<div class="license_field"><div class="server_info">ILL Request Server, v1.0</div> <a target="_blank" href="http://www.gnu.org/licenses/gpl-3.0.html"><div class="license_icon"></div></a></div>
+    	{% block validators %}{% endblock %}
+	</body>
+</html>

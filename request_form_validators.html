@@ -1,0 +1,60 @@
+<script type="text/javascript">
+	var validator = new FormValidator('ill_request_form', [{
+		name: 'title',
+		display: 'title',    
+		rules: 'required'
+	}, {
+		name: 'fullCitation',
+		display: 'full citation',    
+		rules: 'required'
+	}, {
+		name: 'pubDay',
+		display: 'publication day',
+		rules: 'required|numeric|min_length[1]|max_length[2]|greater_than[0]|less_than[32]'
+	}, {
+		name: 'pubMonth',
+		display: 'publication month',
+		rules: 'required|numeric|min_length[1]|max_length[2]|greater_than[0]|less_than[13]'
+	}, {
+		name: 'pubYear',
+		display: 'publication year',
+		rules: 'required|numeric|exact_length[4]|greater_than[999]'
+	}, {
+		name: 'dueDay',
+		display: 'due day',
+		rules: 'required|numeric|min_length[1]|max_length[2]|greater_than[0]|less_than[32]'
+	}, {
+		name: 'dueMonth',
+		display: 'due month',
+		rules: 'required|numeric|min_length[1]|max_length[2]|greater_than[0]|less_than[13]'
+	}, {
+		name: 'dueYear',
+		display: 'due year',
+		rules: 'required|numeric|exact_length[4]|greater_than[999]'
+	}, {
+		name: 'modifiedWhy',
+		display: 'reason for edit',
+		rules: 'required'
+	}, {
+		name: 'volumeNumber',
+		display: 'volume number',
+		rules: 'numeric'
+	}, { 
+		name: 'requesterFullName',
+		display: 'requester full name',
+		rules: 'required'
+	}], function(errors, event) {
+		if (errors.length > 0) {
+    		var errorString = '<span class="red_emphasis">&iexcl;Atención por favor! » There are some problems with your request…</span><ul>';
+    
+	        for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
+	            errorString += '<li class="alertlist">' + errors[i].message + '</li>';
+	        }
+    		errorString += '</ul>';
+    		
+    		show('{{display_container}}');
+    		error_field = document.getElementById('{{display_target}}');
+    		error_field.innerHTML = errorString;
+		}
+	});
+</script>
